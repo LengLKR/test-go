@@ -1,9 +1,12 @@
 package main
 
 import (
+	"log"
 	"os"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
+	"github.com/joho/godotenv"
 )
 
 // Book struct to hold book data
@@ -17,6 +20,10 @@ var books []Book //Slice to store books
 
 
 func main() {
+	if err := godotenv.Load(); err != nil{
+		log.Fatal("load .env error")
+	}
+
 	engine := html.New("./views", ".html")
 
 	app := fiber.New(fiber.Config{
@@ -69,13 +76,13 @@ func testHTML(c *fiber.Ctx) error{
 
 
 func getEnv(c *fiber.Ctx) error{
-	if value, exists := os.LookupEnv("SECRET"); exists{
-		return c.JSON(fiber.Map{
-			"SECRET" : value,
-		})
+	secret := os.Getenv("SECRET")
+
+	if secret == "" {
+		secret = "defaultsecret"
 	}
 
 	return c.JSON(fiber.Map{
-		"SECRET": "defaultsecret",
+		"SECRET": os.Getenv("SECRET"),
 	})
 }
