@@ -10,6 +10,8 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/gofiber/jwt/v2"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/gofiber/swagger"
+	_ "github.com/leng/fiber-test/docs"
 )
 
 // Book struct to hold book data
@@ -32,6 +34,16 @@ func checkMiddleware(c *fiber.Ctx) error {
 	return c.Next()
 }
 
+// @title Book API
+// @description This is a sample server for a book API.
+// @version 1.0
+// @host localhost:3000
+// @BasePath /
+// @schemes http
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+
 func main() {
 	if err := godotenv.Load(); err != nil{
 		log.Fatal("load .env error")
@@ -42,6 +54,8 @@ func main() {
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
+
+	app.Get("/swagger/*", swagger.HandlerDefault) // default
 
 	
 	// Initialize in-memory data

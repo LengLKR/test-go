@@ -10,6 +10,16 @@ func getBooks(c *fiber.Ctx) error{
 	return c.JSON(books)
 }
 
+// Handler functions
+// getBooks godoc
+// @Summary Get all books
+// @Description Get details of all books
+// @Tags books
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Success 200 {array} Book
+// @Router /book [get]
 func getBook(c *fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))//strconv คือ การสลับให้ จาก int เป็น string ในภาษา go
 	if err != nil {
